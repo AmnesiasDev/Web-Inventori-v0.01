@@ -1,28 +1,27 @@
-# StockFlow Pro Merged
+# StockFlow Visual
 
-Project utama beserta dropdown notifikasi stok sudah digabung.
+Versi ringan dengan login visual, foto inventori terkompresi WebP, dekorasi produk, dashboard modern, grafik Canvas tanpa library, dropdown notifikasi, role, transaksi, laporan CSV, dan audit log.
 
 ## Akun demo
-- Admin: Gabriel / StockFlow123
-- Petugas: Petugas / Gudang123
-- Manager: Manager / Laporan123
+- Gabriel / StockFlow123
+- Petugas / Gudang123
+- Manager / Laporan123
 
-## Dropdown notifikasi
-Klik ikon lonceng untuk melihat stok habis dan menipis. Klik item untuk membuka detail barang. Dropdown dapat ditutup dengan klik di luar atau Escape.
+## Optimasi
+- Foto login memakai WebP terkompresi.
+- Tidak memakai framework, CDN, font eksternal, atau library grafik.
+- Animasi hanya CSS ringan.
+- Grafik menggunakan Canvas API.
 
-## Deploy
-Upload seluruh file ke GitHub lalu import ke Vercel. Tidak memerlukan build command.
-
-> Autentikasi dan data masih berbasis browser storage. Gunakan backend untuk produksi.
+Deploy langsung ke Vercel tanpa build command.
 
 
-## Perbaikan audit terbaru
-- Migrasi otomatis data dari key versi sebelumnya agar upgrade tidak menghilangkan data.
-- Session role divalidasi ulang terhadap akun yang dikenal.
-- Data storage rusak tidak menghentikan aplikasi.
-- Validasi produk, transaksi, stock opname, dan referensi diperketat.
-- Stok awal kini tercatat sebagai transaksi.
-- Percobaan login direset benar setelah login berhasil.
-- Ekspor CSV dilindungi dari formula injection.
-- Dropdown notifikasi menangani badge kosong dan kebutuhan restock secara benar.
-- Handler dialog tidak lagi bergantung pada implicit browser globals.
+## Audit perbaikan
+- Migrasi data dari versi sebelumnya.
+- Session role divalidasi.
+- Data storage rusak memakai fallback aman.
+- Validasi tambah/edit barang dan transaksi diperketat.
+- Stok awal dicatat sebagai transaksi.
+- CSV dilindungi dari spreadsheet formula injection.
+- Login mencegah double-submit dan mereset batas percobaan setelah berhasil.
+- Notifikasi mendukung status aria dan tombol Escape.

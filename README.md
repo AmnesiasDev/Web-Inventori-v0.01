@@ -1,25 +1,28 @@
-# StockFlow Pro
+# StockFlow Pro Merged
 
-Aplikasi inventori statis siap deploy ke Vercel.
+Project utama beserta dropdown notifikasi stok sudah digabung.
 
 ## Akun demo
-- Admin: `Gabriel` / `StockFlow123`
-- Petugas: `Petugas` / `Gudang123`
-- Manager: `Manager` / `Laporan123`
+- Admin: Gabriel / StockFlow123
+- Petugas: Petugas / Gudang123
+- Manager: Manager / Laporan123
 
-## Fitur
-Dashboard dan grafik, master barang, satuan dan lokasi, detail riwayat, transaksi dengan referensi, supplier/tujuan dan catatan, stock opname, laporan CSV, audit log, role pengguna, pencarian dan filter, notifikasi stok, serta pembatasan login tiga kali.
+## Dropdown notifikasi
+Klik ikon lonceng untuk melihat stok habis dan menipis. Klik item untuk membuka detail barang. Dropdown dapat ditutup dengan klik di luar atau Escape.
 
 ## Deploy
-Upload ke GitHub lalu import ke Vercel. Framework preset: Other. Tidak memerlukan build command.
+Upload seluruh file ke GitHub lalu import ke Vercel. Tidak memerlukan build command.
 
-> Data dan autentikasi masih memakai browser storage. Untuk produksi, gunakan backend/database dan autentikasi server-side.
+> Autentikasi dan data masih berbasis browser storage. Gunakan backend untuk produksi.
 
-## Audit keamanan kode
-- Password demo tidak lagi disimpan sebagai teks polos, tetapi sebagai SHA-256. Ini hanya hardening frontend, bukan autentikasi produksi.
-- Pembacaan localStorage/sessionStorage memakai parser aman agar data rusak tidak mematikan aplikasi.
-- Session pengguna divalidasi terhadap daftar akun yang dikenal.
-- Referensi form tidak lagi bergantung pada implicit global dari ID HTML.
-- Content Security Policy dasar telah ditambahkan.
 
-Untuk keamanan nyata, pindahkan login, role, dan database ke backend seperti Supabase.
+## Perbaikan audit terbaru
+- Migrasi otomatis data dari key versi sebelumnya agar upgrade tidak menghilangkan data.
+- Session role divalidasi ulang terhadap akun yang dikenal.
+- Data storage rusak tidak menghentikan aplikasi.
+- Validasi produk, transaksi, stock opname, dan referensi diperketat.
+- Stok awal kini tercatat sebagai transaksi.
+- Percobaan login direset benar setelah login berhasil.
+- Ekspor CSV dilindungi dari formula injection.
+- Dropdown notifikasi menangani badge kosong dan kebutuhan restock secara benar.
+- Handler dialog tidak lagi bergantung pada implicit browser globals.

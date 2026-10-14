@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockFlow - Inventory Barang</title>
+  <meta name="description" content="Aplikasi inventori barang sederhana untuk mencatat stok masuk dan keluar.">
+  <meta name="theme-color" content="#101828">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">Stock<span>Flow</span></div>
+    <nav class="nav">
+      <button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button>
+      <button data-page="products">□ &nbsp; Data Barang</button>
+      <button data-page="transactions">⇄ &nbsp; Transaksi Stok</button>
+      <button data-page="reports">▤ &nbsp; Laporan</button>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="page-heading">
+        <button class="icon-button mobile-menu" id="menuBtn" aria-label="Buka menu">☰</button>
+        <div>
+          <div class="eyebrow">INVENTORY MANAGEMENT</div>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="today"></p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="profile-chip"><span class="profile-avatar">GD</span><span class="profile-copy"><b>Gabriel</b><small>Administrator</small></span></div>
+        <button class="btn primary" onclick="openTransaction()"><span>＋</span> Transaksi Baru</button>
+      </div>
+    </div>
+
+    <section class="section active" id="dashboard">
+      <div class="welcome-card">
+        <div>
+          <span class="welcome-kicker">RINGKASAN HARI INI</span>
+          <h2>Selamat datang kembali, Gabriel 👋</h2>
+          <p>Pantau pergerakan barang dan kondisi stok dari satu tempat.</p>
+        </div>
+        <button class="btn welcome-button" onclick="showPage('products')">Lihat semua barang <span>→</span></button>
+      </div>
+      <div class="grid stats-grid">
+        <div class="card stat stat-blue"><div class="stat-top"><span class="stat-icon">▦</span><span class="trend neutral">Data aktif</span></div><div class="label">Jenis Barang</div><div class="value" id="statProducts">0</div><div class="hint">Produk terdaftar di sistem</div></div>
+        <div class="card stat stat-violet"><div class="stat-top"><span class="stat-icon">◈</span><span class="trend positive">Tersedia</span></div><div class="label">Total Stok</div><div class="value" id="statStock">0</div><div class="hint">Seluruh unit di gudang</div></div>
+        <div class="card stat stat-amber"><div class="stat-top"><span class="stat-icon">!</span><span class="trend warning">Perhatian</span></div><div class="label">Stok Menipis</div><div class="value" id="statLow">0</div><div class="hint">Perlu segera ditambah</div></div>
+        <div class="card stat stat-red"><div class="stat-top"><span class="stat-icon">×</span><span class="trend danger">Tindakan</span></div><div class="label">Barang Habis</div><div class="value" id="statOut">0</div><div class="hint">Stok bernilai nol</div></div>
+      </div>
+      <div class="dashboard-bottom">
+        <div class="card"><div class="section-head"><h2>Transaksi Terbaru</h2><button class="btn" onclick="showPage('transactions')">Lihat semua</button></div><div class="list" id="recentTransactions"></div></div>
+        <div class="card"><div class="section-head"><h2>Peringatan Stok</h2></div><div class="list" id="stockWarnings"></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="products">
+      <div class="section-head"><h2>Daftar Barang</h2><button class="btn primary" onclick="openProduct()">+ Tambah Barang</button></div>
+      <div class="toolbar"><input class="input" id="productSearch" placeholder="Cari kode atau nama barang..."><select class="input" id="categoryFilter"><option value="">Semua kategori</option></select></div>
+      <div class="table-wrap"><table><thead><tr><th>Kode</th><th>Nama Barang</th><th>Kategori</th><th>Lokasi</th><th>Stok</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="productRows"></tbody></table></div>
+    </section>
+
+    <section class="section" id="transactions">
+      <div class="section-head"><h2>Riwayat Transaksi</h2><button class="btn primary" onclick="openTransaction()">+ Transaksi Baru</button></div>
+      <div class="toolbar"><input class="input" id="transactionSearch" placeholder="Cari barang atau referensi..."><select class="input" id="typeFilter"><option value="">Semua jenis</option><option value="IN">Barang Masuk</option><option value="OUT">Barang Keluar</option></select></div>
+      <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Referensi</th><th>Barang</th><th>Jenis</th><th>Jumlah</th><th>Stok Sesudah</th><th>Catatan</th></tr></thead><tbody id="transactionRows"></tbody></table></div>
+    </section>
+
+    <section class="section" id="reports">
+      <div class="section-head"><h2>Laporan Inventori</h2></div>
+      <div class="card"><div class="alert">Data tersimpan otomatis di browser perangkat ini. Gunakan ekspor CSV untuk membuat cadangan.</div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn primary" onclick="exportProducts()">Unduh Data Barang (.csv)</button><button class="btn" onclick="exportTransactions()">Unduh Transaksi (.csv)</button><button class="btn danger" onclick="resetData()">Reset Data Demo</button></div></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="productModal"><div class="modal-box"><div class="modal-head"><h3 id="productModalTitle">Tambah Barang</h3><button class="close" onclick="closeModal('productModal')">×</button></div><form id="productForm"><input type="hidden" id="productId"><div class="form-grid">
+  <div class="field"><label>Kode Barang</label><input class="input" id="code" required placeholder="BRG-001"></div><div class="field"><label>Nama Barang</label><input class="input" id="name" required></div>
+  <div class="field"><label>Kategori</label><input class="input" id="category" required></div><div class="field"><label>Satuan</label><input class="input" id="unit" required placeholder="pcs"></div>
+  <div class="field"><label>Lokasi</label><input class="input" id="location" required placeholder="Rak A1"></div><div class="field"><label>Stok Minimum</label><input class="input" id="minStock" type="number" min="0" required></div>
+  <div class="field full" id="initialStockField"><label>Stok Awal</label><input class="input" id="initialStock" type="number" min="0" required></div>
+</div><div class="actions"><button type="button" class="btn" onclick="closeModal('productModal')">Batal</button><button class="btn primary" type="submit">Simpan</button></div></form></div></div>
+
+<div class="modal" id="transactionModal"><div class="modal-box"><div class="modal-head"><h3>Transaksi Stok</h3><button class="close" onclick="closeModal('transactionModal')">×</button></div><form id="transactionForm"><div class="form-grid">
+  <div class="field"><label>Jenis Transaksi</label><select class="input" id="trxType" required><option value="IN">Barang Masuk</option><option value="OUT">Barang Keluar</option></select></div>
+  <div class="field"><label>Barang</label><select class="input" id="trxProduct" required></select></div>
+  <div class="field"><label>Jumlah</label><input class="input" id="trxQty" type="number" min="1" required></div><div class="field"><label>Nomor Referensi</label><input class="input" id="trxRef" required></div>
+  <div class="field full"><label>Catatan</label><textarea class="input" id="trxNote" rows="3" placeholder="Supplier, tujuan, atau keterangan lainnya"></textarea></div>
+</div><div class="actions"><button type="button" class="btn" onclick="closeModal('transactionModal')">Batal</button><button class="btn primary" type="submit">Proses Transaksi</button></div></form></div></div>
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
